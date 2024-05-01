@@ -6,6 +6,18 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/css/index.css">
+        <!-- <style> 
+            .htmx-indicator{
+                opacity:0;
+                transition: opacity 10ms ease-in;
+            }
+            .htmx-request .htmx-indicator{
+                opacity:1
+            }
+        </style> -->
+    </head>
+    <body>
         <script>
         document.addEventListener("DOMContentLoaded", (event) => {
             document.body.addEventListener('htmx:beforeSwap', function(evt) {
@@ -16,17 +28,7 @@
             });
         });
         </script>
-        <style>
-            .htmx-indicator{
-                opacity:0;
-                transition: opacity 10ms ease-in;
-            }
-            .htmx-request .htmx-indicator{
-                opacity:1
-            }
-        </style>
-    </head>
-    <body>
+
         {{ template "form" .FormData }}
         <hr />
         {{ template "display" .Data }}
@@ -60,9 +62,19 @@
 {{ end }}
 
 {{ block "contact" . }}
-    <div>
+    <div class="contact" id="contact-{{ .Id }}" style="display: flex">
+        <div hx-indicator="#ci-{{ .Id }}" hx-target="#contact-{{ .Id }}" hx-swap="outerHTML swap:500ms" 
+        hx-delete="/contacts/{{ .Id }}" style="width: 1rem; cursor: pointer">
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" version="1.1">
+	            <rect x="6" y="6" width="12" height="12" fill="grey"/>
+	            <rect x="5" y="5" width="14" height="2" fill="darkgrey"/>
+            </svg>
+        </div>
         Name: <span>{{ .Name }}</span>
         Email: <span>{{ .Email }}</span>
+        <div id="ci-{{ .Id }}" class="htmx-indicator">
+            Loading...
+        </div>
     </div>
 {{ end }} 
 
@@ -71,3 +83,4 @@
         {{ template "contact" . }}
     </div>
 {{ end }}
+
