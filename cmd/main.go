@@ -12,7 +12,7 @@ import (
 )
 
 type Templates struct {
-    templates *template.Template
+	templates *template.Template
 }
 
 func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -29,15 +29,15 @@ var id = 0
 
 type Contact struct {
 	Name, Email string
-	Id int
+	Id          int
 }
 
 func newContact(name, email string) Contact {
 	id++
 	return Contact{
-		Name: name,
+		Name:  name,
 		Email: email,
-		Id: id,
+		Id:    id,
 	}
 }
 
@@ -56,7 +56,7 @@ type Data struct {
 	Contacts Contacts
 }
 
-func (d *Data) indexOf(int int) int {
+func (d *Data) indexOf(id int) int {
 	for i, contact := range d.Contacts {
 		if contact.Id == id {
 			return i
@@ -87,13 +87,13 @@ func newFormData() FormData {
 }
 
 type Page struct {
-	Data Data
+	Data     Data
 	FormData FormData
 }
 
 func newPage() Page {
 	return Page{
-		Data: newData(),
+		Data:     newData(),
 		FormData: newFormData(),
 	}
 }
@@ -132,7 +132,7 @@ func main() {
 		return c.Render(http.StatusOK, "oob-contact", contact)
 	})
 
-	e.DELETE("/contacts/:id", func (c echo.Context) error {
+	e.DELETE("/contacts/:id", func(c echo.Context) error {
 		time.Sleep(3 * time.Second)
 
 		idStr := c.Param("id")
@@ -153,4 +153,3 @@ func main() {
 
 	e.Logger.Fatal(e.Start(":42069"))
 }
-
